@@ -1730,8 +1730,8 @@
             </svg>
           </a>
 
-          <a href="YOUR_RESUME_LINK_HERE" download="Malla_Charmi_Resume.pdf" class="btn-outline" id="resume-btn"
-            onclick="downloadResume(event)">
+          <a href="https://drive.google.com/file/d/1-tXL6zT3EwUspFKWiNOV9CQ7F6KrG3aB/view?usp=sharing"
+            download="Malla_Charmi_Resume.pdf" class="btn-outline" id="resume-btn" onclick="downloadResume(event)">
             Download Resume
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -2360,10 +2360,10 @@
 
     // RESUME DOWNLOAD
     function downloadResume(e) {
-      const resumeUrl = 'YOUR_RESUME_LINK_HERE'; // 👈 Replace with your actual Google Drive or direct PDF link
-      if (resumeUrl === 'YOUR_RESUME_LINK_HERE') {
+      const resumeUrl = 'https://drive.google.com/file/d/1-tXL6zT3EwUspFKWiNOV9CQ7F6KrG3aB/view?usp=sharing'; // 👈 Replace with your actual Google Drive or direct PDF link
+      if (resumeUrl === 'https://drive.google.com/file/d/1-tXL6zT3EwUspFKWiNOV9CQ7F6KrG3aB/view?usp=sharing') {
         e.preventDefault();
-        alert('⚠️ Please update the resume link in the HTML file.\nReplace "YOUR_RESUME_LINK_HERE" with your actual resume URL (e.g. a Google Drive direct download link).');
+        alert('⚠️ Please update the resume link in the HTML file.\nReplace "https://drive.google.com/file/d/1-tXL6zT3EwUspFKWiNOV9CQ7F6KrG3aB/view?usp=sharing" with your actual resume URL (e.g. a Google Drive direct download link).');
         return;
       }
       // If it's a Google Drive link, convert it to direct download format
