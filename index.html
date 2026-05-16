@@ -49,7 +49,7 @@
       color: var(--text);
       font-family: var(--font-body);
       overflow-x: hidden;
-      cursor: none
+      cursor: auto
     }
 
     ::selection {
@@ -1719,15 +1719,19 @@
           B.Tech CSE (AI & ML) student at Aditya University with a CGPA of 9.02. Passionate about turning raw data into
           meaningful decisions through analytics, automation, and cloud-native tools.
         </p>
+
         <div class="hero-actions reveal d4">
-          <a href="#projects" class="btn-primary">
+
+          <a href="#projects" onclick="navTo(event,'#projects')" class="btn-primary">
             View Projects
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
           </a>
-          <a href="resume.pdf" download="Malla_Charmi_Resume.pdf" class="btn-outline" id="resume-btn">
+
+          <a href="YOUR_RESUME_LINK_HERE" download="Malla_Charmi_Resume.pdf" class="btn-outline" id="resume-btn"
+            onclick="downloadResume(event)">
             Download Resume
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1735,7 +1739,10 @@
               <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
           </a>
+
         </div>
+
+
         <div class="hero-stats reveal d5">
           <div class="stat-card">
             <div class="stat-num" data-count="9.02" data-dec="2">0</div>
@@ -1981,7 +1988,8 @@
             View on GitHub →
           </a>
         </div>
-
+      </div>
+    </div>
   </section>
 
   <!-- EXPERIENCE -->
@@ -2278,14 +2286,24 @@
   </footer>
 
   <script>
-    // CURSOR
+    // CURSOR — event delegation so it always works on every element, no reload needed
     const cursor = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
     let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px' });
-    function animRing() { rx += (mx - rx) * .15; ry += (my - ry) * .15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing) } animRing();
-    document.querySelectorAll('a,button,.skill-chip,.cert-card,.project-card,.highlight').forEach(el => {
-      el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; cursor.style.background = 'var(--primary-light)'; ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(96,165,250,.4)' });
-      el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; cursor.style.background = '#fff'; ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(96,165,250,.6)' });
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+    function animRing() { rx += (mx - rx) * .15; ry += (my - ry) * .15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); } animRing();
+
+    const HOVER_SEL = 'a, button, .skill-chip, .cert-card, .project-card, .highlight';
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest(HOVER_SEL)) {
+        cursor.style.width = '20px'; cursor.style.height = '20px'; cursor.style.background = 'var(--primary-light)';
+        ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(96,165,250,.4)';
+      }
+    });
+    document.addEventListener('mouseout', e => {
+      if (e.target.closest(HOVER_SEL)) {
+        cursor.style.width = '12px'; cursor.style.height = '12px'; cursor.style.background = '#fff';
+        ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(96,165,250,.6)';
+      }
     });
 
     // PARTICLES
@@ -2330,8 +2348,36 @@
     const cObs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { animCounter(e.target); cObs.unobserve(e.target) } }), { threshold: .5 });
     document.querySelectorAll('[data-count]').forEach(el => cObs.observe(el));
 
-    // NAV HELPERS
-    function navTo(e, href) { e.preventDefault(); document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' }) }
+    // NAV HELPERS — clears hash so repeated clicks on same link always work
+    function navTo(e, href) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }
+
+    // RESUME DOWNLOAD
+    function downloadResume(e) {
+      const resumeUrl = 'YOUR_RESUME_LINK_HERE'; // 👈 Replace with your actual Google Drive or direct PDF link
+      if (resumeUrl === 'YOUR_RESUME_LINK_HERE') {
+        e.preventDefault();
+        alert('⚠️ Please update the resume link in the HTML file.\nReplace "YOUR_RESUME_LINK_HERE" with your actual resume URL (e.g. a Google Drive direct download link).');
+        return;
+      }
+      // If it's a Google Drive link, convert it to direct download format
+      if (resumeUrl.includes('drive.google.com/file/d/')) {
+        e.preventDefault();
+        const fileId = resumeUrl.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+        if (fileId) {
+          const downloadLink = document.createElement('a');
+          downloadLink.href = `https://drive.google.com/uc?export=download&id=${fileId}`;
+          downloadLink.download = 'Malla_Charmi_Resume.pdf';
+          downloadLink.click();
+        }
+      }
+    }
     function toggleMenu() {
       const m = document.getElementById('mobile-menu'), open = m.classList.toggle('open');
       document.getElementById('h1').style.transform = open ? 'rotate(45deg) translate(5px,5px)' : '';
